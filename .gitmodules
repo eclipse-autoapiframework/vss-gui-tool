@@ -1,0 +1,3 @@
+[submodule "scripts/vss"]
+	path = scripts/vss
+	url = https://github.com/COVESA/vehicle_signal_specification.git

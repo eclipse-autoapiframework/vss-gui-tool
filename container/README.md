@@ -1,0 +1,1 @@
+Run the ´build.sh´ script to create the container image that will be used for running the GUI script. 
