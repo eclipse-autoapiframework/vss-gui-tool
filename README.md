@@ -22,3 +22,6 @@ This repository contains the GUI tool for the selection and addition of signals 
 3. Build the container image by running the `build.sh` script in the [container](./container/) folder. 
 4. Run the container: `docker run -ti -e DISPLAY=$(hostname).local:0 -it vss_gui:latest`. In case of WSL, ensure that x11 forwarding is enabled and working. 
 5. Run the Python `vss_gui.py`script in `/app/gui` folder.  
+
+## Dependencies to other repositories
+This tool can be used in combination with application framework: https://github.com/eclipse-autoapiframework/application-framework
