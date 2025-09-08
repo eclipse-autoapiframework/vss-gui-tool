@@ -1,3 +1,4 @@
+import ast
 import sys
 import os
 
@@ -11,13 +12,16 @@ relative_path = os.path.join(current_dir, '../vss/vss-tools')
 sys.path.append(relative_path)
 
 import vspec2x
-from vspec.vssexporters import vss2csv
+from vspec.vssexporters import vss2json
 import tkinter as tk
 from tkinter import filedialog, ttk, messagebox, scrolledtext 
 import csv
 from screeninfo import get_monitors
 import logging
 from vspec_app import VSPECApp
+from typing import Dict, Any
+from vspec.model.vsstree import VSSNode
+import json
 
 # Class defined for Redirecting standard data and standard error messages to log window
 class RedirectText(object):
@@ -215,7 +219,11 @@ class TextSearchApp:
         app.open_button.grid(row=7, column=1,padx=300, pady=10, sticky="nsew")
 
         # Button to generate CSV file from selected items
-        app.generate_button = tk.Button(app.grid_frame3 , text="Generate CSV File", command=app.generate_csv)
+        # app.generate_button = tk.Button(app.grid_frame3 , text="Generate CSV File", command=app.generate_csv)
+        # app.generate_button.grid(row=7, column=2, padx=500, pady=10, sticky='nsew')
+
+        # Button to generate JSON file from selected items
+        app.generate_button = tk.Button(app.grid_frame3 , text="Generate JSON File", command=app.generate_json)
         app.generate_button.grid(row=7, column=2, padx=500, pady=10, sticky='nsew')
 
         # Frame for grid layout (8th row)
@@ -423,6 +431,52 @@ class TextSearchApp:
                 messagebox.showerror("Error", f"Failed to save CSV file: {str(e)}")
         
         app.folder_path = app.csv_path.replace("/Donot_Delete_Internal_file.csv", "")
+
+    # Build the tree based on selected data elements 
+    def build_vss_tree(selected_data):
+        tree = {}
+        for row in selected_data:
+            path = row[0].split('.')
+            current = tree
+            for part in path[:-1]:
+                current = current.setdefault(part, {"type": "branch", "children": {}})["children"]
+            signal_name = path[-1]
+            signal_data = {
+                "type": row[1],
+                "datatype": row[2],
+                "unit": row[3],
+                "min": float(row[4]) if row[4] != '' else "", # Conversion of string to double only if entry is available 
+                "max": float(row[5]) if row[5] != '' else "", # Conversion of string to double only if entry is available
+                "default": row[6] if (row[6] == "UNKNOWN") else (float(row[6]) if (row[6] != '') else ""), #lists are not supported in this version
+                "allowed": ast.literal_eval(row[7]) if row[7] != '' else "", # Conversion of string to python list
+                "description": row[8],
+            }
+            # Remove keys with empty list values
+            signal_data = {k: v for k, v in signal_data.items() if v != ""}
+            current[signal_name] = signal_data
+        return tree
+
+    #Generate JSON Output file with Selected data elements
+    def generate_json(app):
+        selected_items = app.tree_selected.get_children()
+        if not selected_items:
+            messagebox.showerror("Error", "Selected list is empty")
+            return
+
+        selected_data = [app.tree_selected.item(item, "values") for item in selected_items]
+        vss_tree = TextSearchApp.build_vss_tree(selected_data)
+        json_file_path = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON files", "*.json")])
+
+        if json_file_path:
+            try:
+                with open(json_file_path, mode='w', encoding='utf-8') as file: 
+                    json.dump(vss_tree, file, indent=4)
+                    messagebox.showinfo("Success", f"JSON file has been saved at {json_file_path}")
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to save JSON file: {str(e)}")
+        
+        app.folder_path = app.csv_path.replace("/Donot_Delete_Internal_file.csv", "")    
+
 
 # Code to display the the Log window    
 def open_log_window():

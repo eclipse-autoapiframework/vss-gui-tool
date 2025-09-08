@@ -18,10 +18,11 @@ This repository contains the GUI tool for the selection and addition of signals 
 
 ## Running the script 
 1. Update the submodules linked to the repository: `git submodule update --init --recursive`. 
-2. Since the GUI tool has been tested upto v4.X of the VSS tools, navigate to the vss-tools repository located in the [vss] (./scripts/vss) folder and checkout to the required version: `git checkout v4.1.1`. 
-3. Build the container image by running the `build.sh` script in the [container](./container/) folder. 
-4. Run the container: `docker run -ti -e DISPLAY=$(hostname).local:0 -it vss_gui:latest`. In case of WSL, ensure that x11 forwarding is enabled and working. 
-5. Run the Python `vss_gui.py`script in `/app/gui` folder.  
+2. Since the GUI tool has been tested upto v4.x of the VSS, navigate to the vss repository located in the [scripts] (./scripts/) folder and checkout to the required version: `git checkout v4.1`. 
+3. Update the submodules linked to vss repository: `git submodule update --init --recursive`.
+4. Build the container image by running the `build.sh` script in the [container](./container/) folder. 
+5. Run the container: `docker run -ti -e DISPLAY=$(hostname).local:0 -it vss_gui:latest`. In case of WSL, ensure that x11 forwarding is enabled and working. 
+6. Run the Python `vss_gui.py`script in `/app/gui` folder.  
 
 ## Dependencies to other repositories
 This tool can be used in combination with application framework: https://github.com/eclipse-autoapiframework/application-framework
