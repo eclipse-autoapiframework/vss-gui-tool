@@ -1,1 +1,10 @@
 __pycache__/
+.tmp/
+*.bkp
+.cache
+build
+public
+**/__pycache__/
+_build/
+bazel-*
+.venv*/
