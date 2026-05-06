@@ -12,7 +12,7 @@
 # *******************************************************************************
 
 module(
-    name = "autoapiframework_vss_gui_tool",
+    name = "auto_api_framework",
     version = "0.0.0",
 )
 

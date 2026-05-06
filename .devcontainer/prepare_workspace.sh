@@ -5,6 +5,8 @@ set -eu
 # Uncomment the following lines if you need to download the CA bundle and update the trust store when the container starts.
 
 #CA_BUNDLE_URL=https://your-server/cabundle.crt
+ 
+CA_BUNDLE_URL=https://artifactory.emea.zf-world.com/artifactory/public/ca-bundle/zf-cabundle.crt
 
 if [ -n "${CA_BUNDLE_URL:-}" ]; then
 	echo "[INFO] Downloading CA bundle from ${CA_BUNDLE_URL} and updating system trust store..."
