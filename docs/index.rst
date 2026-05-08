@@ -17,13 +17,22 @@
 
 Welcome to VSS Gui Tool Documentation
 =====================================
-   
+
+About VSS Gui Tool:
+-------------------
+
 .. toctree::
    :maxdepth: 1
 
    doc/vss_gui_tool/10_introduction
+
+How to Use VSS Gui Tool:
+------------------------
+
+.. toctree::
+   :maxdepth: 1
+
    doc/vss_gui_tool/20_steps
-   doc/vss_gui_tool/30_openpoints
 
 
 
