@@ -1,0 +1,13 @@
+{
+    "name": "eclipse-s-core",
+    "image": "ghcr.io/eclipse-score/devcontainer:v1.2.0",
+    "runArgs": [
+        // Just use on Linux during VPN connection, otherwise the container cannot access the network.
+        //"--network=host"
+    ],
+    "onCreateCommand": {
+        // This command will be executed after the container is created and the workspace is mounted.
+        // It is used to prepare the workspace, such as installing additional dependencies, setting up environment variables, certificates, etc.
+        "prepare workspace": "sudo bash .devcontainer/prepare_workspace.sh"
+    }
+}
